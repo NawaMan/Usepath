@@ -21,7 +21,9 @@ package net.nawaman.usepath;
 // 1. Provide a list of storage name (in the form of file name)
 // 2. Provide the storage object
 /**
- * A usepath that holds Usable Objects
+ * A usepath that holds Usable Objects.
+ * 
+ * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
 abstract public class Usepath {
 	

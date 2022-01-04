@@ -20,7 +20,9 @@ package net.nawaman.usepath;
 import java.io.IOException;
 
 /**
- * Takes care the load/save of the object
+ * Takes care the load/save of the object.
+ * 
+ * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
 abstract public interface UsableStorage {
 

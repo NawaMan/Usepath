@@ -22,6 +22,8 @@ import java.io.FilenameFilter;
 
 /**
  * Filter the Usable. This class allows file to be filtered by its name before isMatch(...) function is called.
+ * 
+ * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
 abstract public class UFFilenameFilter implements UsableFilter {
 	

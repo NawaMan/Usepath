@@ -17,7 +17,11 @@
  */
 package net.nawaman.usepath;
 
-/** Hold the object */
+/**
+ * Hold the object.
+ * 
+ * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
+ **/
 abstract public class UsableHolder<T> {
 	
 	Usepath Usepath;

@@ -17,7 +17,11 @@
  */
 package net.nawaman.usepath;
 
-/** Filter for the Usable Object */
+/**
+ * Filter for the Usable Object.
+ * 
+ * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
+ **/
 public interface UsableFilter {
 
 	/** Filters if the object with the given full name is match with the given name for the usable being search */

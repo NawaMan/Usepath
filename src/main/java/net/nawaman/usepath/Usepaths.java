@@ -30,6 +30,8 @@ import java.util.Vector;
  * Usepaths helps to looks for thing usable in a similar fashion to Classpath of Java.
  * 
  * It has ability to include all class path of Java runtime.
+ * 
+ * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
 abstract public class Usepaths {
 	

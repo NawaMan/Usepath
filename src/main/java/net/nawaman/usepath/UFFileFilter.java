@@ -24,6 +24,8 @@ import java.io.FileFilter;
  * Filter the Usable by its file.
  * 
  * Filter the Usable. This class allows file to be filtered before isMatch(...) function is called.
+ * 
+ * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
 public class UFFileFilter implements UsableFilter {
 	

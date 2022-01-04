@@ -17,7 +17,11 @@
  */
 package net.nawaman.usepath;
 
-/** Creates UsableHolder from the given Storage */
+/**
+ * Creates UsableHolder from the given Storage.
+ * 
+ * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
+ **/
 public interface UsableFactory {
 	
 	/** Returns the name of the Factory */

@@ -21,7 +21,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-/** Usepath for file in folder */
+/**
+ * Usepath for file in folder
+ * 
+ * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
+ **/
 public class UPFileInFolder extends Usepath {
 	
 	public UPFileInFolder(File Folder) {

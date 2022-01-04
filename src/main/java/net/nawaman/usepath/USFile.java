@@ -25,6 +25,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * Usable storage in a file.
+ * 
+ * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
+ */
 public class USFile implements UsableStorage {
 	
 	public USFile(String TheFileName) throws FileNotFoundException {
