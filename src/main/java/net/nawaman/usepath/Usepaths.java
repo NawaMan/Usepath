@@ -19,9 +19,9 @@ package net.nawaman.usepath;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 // FullName		=>	jar:file://<jvm>/lib/rt.jar::java.io.File	
 // Name		 	=>	java.io.File
@@ -36,24 +36,36 @@ import java.util.Vector;
  **/
 public abstract class Usepaths {
 	
-	/** UsepathInfo Name => UsepathInfo */
-	final Map<String, Usepath> usepaths = new HashMap<String, Usepath>();
+	/** Usepath Name => Usepath */
+	private final Map<String, Usepath> usepaths = new ConcurrentHashMap<String, Usepath>();
 	
 	/** Factory Name => Factory */
-	HashMap<String, UsableFactory> UsableFactories = new HashMap<String, UsableFactory>();
+	private final Map<String, UsableFactory> usableFactories = new ConcurrentHashMap<String, UsableFactory>();
+	
+	/** Object Cache */
+	private final Map<String, UsableHolder<? extends Object>> caches = new ConcurrentHashMap<String, UsableHolder<? extends Object>>();
+	
+	/** UsableHolder Name => UsableHolder */
+	private final Map<String, UsableHolder<? extends Object>> usableHolders = new ConcurrentHashMap<String, UsableHolder<? extends Object>>();
 	
 	// Discovering -----------------------------------------------------------------------------------------------------
 	
 	/** Registre a usepath from string */
 	abstract public void registerUsepath(String UPath);
 	
+	/** Register a usepath from string */
+	void registerUsepath(String name, Usepath usepath) {
+		this.usepaths.put(name, usepath);
+	}
+	
+	
 	/** Returns the number of usepaths */
-	final public int getUsepathCount() {
+	public final int getUsepathCount() {
 		return this.usepaths.size();
 	}
 	
 	/** Returns the use path as string */
-	final public String[] getUsepaths() {
+	public final String[] getUsepaths() {
 		Vector<String> UPs = new Vector<String>(this.usepaths.keySet());
 		Collections.sort(UPs);
 		return UPs.toArray(new String[UPs.size()]);
@@ -61,31 +73,26 @@ public abstract class Usepaths {
 
 	// Look up ---------------------------------------------------------------------------------------------------------
 	
-	/** Object Cache */
-	HashMap<String, UsableHolder<? extends Object>> Caches = new HashMap<String, UsableHolder<? extends Object>>();
-	
 	/** Returns the UsableHolder form the Cache */
-	final protected UsableHolder<? extends Object> getUsableHolderFromCache(String Name) {
-		return this.Caches.get(Name);
+	protected final UsableHolder<? extends Object> getUsableHolderFromCache(String Name) {
+		return this.caches.get(Name);
 	}
 	
-	final protected void addUsableHolderToChache(String Name, UsableHolder<? extends Object> UH, boolean IsForceReplace) {
-		if(!IsForceReplace && this.Caches.containsKey(Name)) return;
+	protected final void addUsableHolderToChache(String Name, UsableHolder<? extends Object> UH, boolean IsForceReplace) {
+		if(!IsForceReplace && this.caches.containsKey(Name)) return;
 		
 		if(Name == null) {
 			if(UH == null) return;
 			Name = UH.Name;
 		}
 		
-		if(UH == null) this.Caches.remove(Name);
-		else           this.Caches.put(Name, UH);
+		if(UH == null) this.caches.remove(Name);
+		else           this.caches.put(Name, UH);
 	}
-	
-	HashMap<String, UsableHolder<? extends Object>> UsableHolders = new HashMap<String, UsableHolder<? extends Object>>();
 	
 	public UsableHolder<? extends Object> getUsableHolder(String Name) {
 		// Find in the cache
-		UsableHolder<? extends Object> UH = this.UsableHolders.get(Name);
+		UsableHolder<? extends Object> UH = this.usableHolders.get(Name);
 		if(UH != null) return UH;
 		
 		// Search
@@ -94,7 +101,7 @@ public abstract class Usepaths {
 			UsableFilter UF = this.getUsableFilter(i);
 			UH = this.searchUsableHolder(UF, Name);
 			if(UH != null) {
-				this.UsableHolders.put(Name, UH);
+				this.usableHolders.put(Name, UH);
 				return UH;
 			}
 		}
@@ -117,8 +124,8 @@ public abstract class Usepaths {
 		}
 		if(US == null) return null;
 	
-		for(String UFNs : this.UsableFactories.keySet()) {
-			UsableFactory UF = this.UsableFactories.get(UFNs);
+		for(String UFNs : this.usableFactories.keySet()) {
+			UsableFactory UF = this.usableFactories.get(UFNs);
 			if(UF == null) continue;
 			UH = UF.getUsableHolder(UP, US);
 			if(UH != null) return UH;
@@ -131,14 +138,14 @@ public abstract class Usepaths {
 	
 	/** Register a UsableFactory */
 	protected boolean registerFactory(UsableFactory UFactory) {
-		if(this.UsableFactories.get(UFactory.getName()) != null) return false;
-		this.UsableFactories.put(UFactory.getName(), UFactory);
+		if(this.usableFactories.get(UFactory.getName()) != null) return false;
+		this.usableFactories.put(UFactory.getName(), UFactory);
 		return true;
 	}
 	
 	/** Returns a registed UsableFactory */
 	public UsableFactory getUsableFactory(String FactoryName) {
-		return this.UsableFactories.get(FactoryName);
+		return this.usableFactories.get(FactoryName);
 	}
 
 	// Filter ----------------------------------------------------------------------------------------------------------
