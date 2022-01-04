@@ -17,6 +17,8 @@
  */
 package net.nawaman.usepath;
 
+import java.util.Optional;
+
 // Resposibility
 // 1. Provide a list of storage name (in the form of file name)
 // 2. Provide the storage object
@@ -27,14 +29,22 @@ package net.nawaman.usepath;
  **/
 public abstract class Usepath {
 	
-	private Usepaths usepaths;
+	private final Usepaths usepaths;
 	
+	protected Usepath() {
+		this(null);
+	}
+	
+	protected Usepath(Usepaths usepaths) {
+		this.usepaths = usepaths;
+	}
+
 	/** Returns the name of this Usepath */
 	public abstract String name();
 	
-	/** Returns Usepaths that holds this Usepath */
-	protected final Usepaths usepaths() {
-		return this.usepaths;
+	/** Returns source usepaths that holds this Usepath */
+	protected final Optional<Usepaths> source() {
+		return Optional.ofNullable(this.usepaths);
 	}
 
 	/** Creates a Storage for the matched Usable */
