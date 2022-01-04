@@ -3,7 +3,7 @@
  *----------------------------------------------------------------------------------------------------------------------
  * LICENSE:
  * 
- * This file is part of Nawa's SimpleCompiler.
+ * This file is part of Nawa's Usepath.
  * 
  * The project is a free software; you can redistribute it and/or modify it under the SIMILAR terms of the GNU General
  * Public License as published by the Free Software Foundation; either version 2 of the License, or any later version.
@@ -25,19 +25,19 @@ package net.nawaman.usepath;
  * 
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
-abstract public class Usepath {
+public abstract class Usepath {
 	
-	Usepaths UPs;
+	private Usepaths usepaths;
 	
 	/** Returns the name of this Usepath */
-	abstract public String getName();
+	public abstract String name();
 	
 	/** Returns Usepaths that holds this Usepath */
-	final protected Usepaths getUsepaths() {
-		return this.UPs;
+	protected final Usepaths usepaths() {
+		return this.usepaths;
 	}
 
 	/** Creates a Storage for the matched Usable */
-	abstract public UsableStorage newUsableStorage(UsableFilter UFilter, String Name);
+	public abstract UsableStorage newUsableStorage(UsableFilter usableFilter, String name);
 	
 }

@@ -3,7 +3,7 @@
  *----------------------------------------------------------------------------------------------------------------------
  * LICENSE:
  * 
- * This file is part of Nawa's SimpleCompiler.
+ * This file is part of Nawa's Usepath.
  * 
  * The project is a free software; you can redistribute it and/or modify it under the SIMILAR terms of the GNU General
  * Public License as published by the Free Software Foundation; either version 2 of the License, or any later version.
@@ -48,7 +48,7 @@ public class UPFileInFolder extends Usepath {
 	}
 	
 	/**{@inheritDoc}*/ @Override
-	public String getName() {
+	public String name() {
 		return this.Folder.getAbsolutePath();
 	}
 

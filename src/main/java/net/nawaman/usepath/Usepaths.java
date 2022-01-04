@@ -3,7 +3,7 @@
  *----------------------------------------------------------------------------------------------------------------------
  * LICENSE:
  * 
- * This file is part of Nawa's SimpleCompiler.
+ * This file is part of Nawa's Usepath.
  * 
  * The project is a free software; you can redistribute it and/or modify it under the SIMILAR terms of the GNU General
  * Public License as published by the Free Software Foundation; either version 2 of the License, or any later version.
@@ -20,6 +20,7 @@ package net.nawaman.usepath;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 // FullName		=>	jar:file://<jvm>/lib/rt.jar::java.io.File	
@@ -33,10 +34,10 @@ import java.util.Vector;
  * 
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
-abstract public class Usepaths {
+public abstract class Usepaths {
 	
 	/** UsepathInfo Name => UsepathInfo */
-	final protected HashMap<String, Usepath> Usepaths = new HashMap<String, Usepath>();
+	final Map<String, Usepath> usepaths = new HashMap<String, Usepath>();
 	
 	/** Factory Name => Factory */
 	HashMap<String, UsableFactory> UsableFactories = new HashMap<String, UsableFactory>();
@@ -48,12 +49,12 @@ abstract public class Usepaths {
 	
 	/** Returns the number of usepaths */
 	final public int getUsepathCount() {
-		return this.Usepaths.size();
+		return this.usepaths.size();
 	}
 	
 	/** Returns the use path as string */
 	final public String[] getUsepaths() {
-		Vector<String> UPs = new Vector<String>(this.Usepaths.keySet());
+		Vector<String> UPs = new Vector<String>(this.usepaths.keySet());
 		Collections.sort(UPs);
 		return UPs.toArray(new String[UPs.size()]);
 	}
@@ -107,8 +108,8 @@ abstract public class Usepaths {
 		Usepath                        UP = null;
 		UsableHolder<? extends Object> UH = null;
 		
-		for(String UPNs : this.Usepaths.keySet()) {
-			UP = this.Usepaths.get(UPNs);
+		for(String UPNs : this.usepaths.keySet()) {
+			UP = this.usepaths.get(UPNs);
 			if(UP == null) continue;
 			US = UP.newUsableStorage(UFilter, Name);
 			if(US == null) continue;

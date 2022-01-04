@@ -18,13 +18,14 @@
 package net.nawaman.usepath;
 
 /**
- * Filter for the Usable Object.
+ * This usepath can accept additional Usepath.
  * 
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
-public interface UsableFilter {
+public abstract class AppendableUsepaths extends Usepaths {
 
-	/** Filters if the object with the given full name is match with the given name for the usable being search */
-	public boolean isMatch(Usepath UPath, String FullName, String Name);
-	
+	/** Register a usepath from string */
+	protected final void registerUsepath(String name, Usepath usepath) {
+		this.usepaths.put(name, usepath);
+	}
 }
