@@ -20,6 +20,7 @@ package net.nawaman.usepath;
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 import net.nawaman.usepath.utils.IStream;
 
@@ -52,62 +53,56 @@ public abstract class UsePaths {
 	
 	/** Register a usepath */
 	void registerUsepath(String name, UsePath usepath) {
-		this.usepaths.put(name, usepath);
-	}
-	
-	
-	/** Returns the number of usepaths */
-	public final int getUsepathCount() {
-		return this.usepaths.size();
+		usepaths.put(name, usepath);
 	}
 	
 	/** Returns the use path as string */
 	public final IStream<String> usepaths() {
-		return IStream.forSupplier(() -> this.usepaths.keySet().stream().sorted());
+		return IStream.forSupplier(() -> usepaths.keySet().stream().sorted());
 	}
 	
 	// Look up ---------------------------------------------------------------------------------------------------------
 	
 	@SuppressWarnings("unchecked")
-	public <T extends Object> UsableHolder<T> getUsableHolder(String name) {
-		// Find in the cache
-		var holder = this.usableHolders.get(name);
-		if(holder != null)
-			return (UsableHolder<T>)holder;
-		
-		// Search
-		holder = this.usableFilters()
-				.map   (usableFilter -> this.searchUsableHolder(usableFilter, name))
-				.filter(usableHolder -> usableHolder != null)
-				.findFirst()
-				.orElse(null);
-		if(holder != null) {
-			this.usableHolders.put(name, holder);
-		}
-		
+	public <T> UsableHolder<T> getUsableHolder(String name) {
+		var holder = usableHolders.computeIfAbsent(name, __ -> {
+			return usableFilters()
+					.map   (usableFilter -> searchUsableHolder(usableFilter, name))
+					.filter(usableHolder -> usableHolder != null)
+					.findFirst()
+					.orElse(null);
+		});
 		return (UsableHolder<T>)holder;
 	}
 	
 	/** Search and a UsableHolder */
-	public UsableHolder<? extends Object> searchUsableHolder(UsableFilter UFilter, String Name) {
-		UsableStorage                  US = null;
-		UsePath                        UP = null;
-		UsableHolder<? extends Object> UH = null;
+	@SuppressWarnings("unchecked")
+	public <T> UsableHolder<T> searchUsableHolder(UsableFilter usableFilter, String name) {
+		UsableStorage useableStorage = null;
+		UsePath       usePath        = null;
 		
-		for(String UPNs : this.usepaths.keySet()) {
-			UP = this.usepaths.get(UPNs);
-			if(UP == null) continue;
-			US = UP.newUsableStorage(UFilter, Name);
-			if(US == null) continue;
+		for(var usePathName : usepaths.keySet()) {
+			usePath = usepaths.get(usePathName);
+			if(usePath == null)
+				continue;
+			
+			useableStorage = usePath.newUsableStorage(usableFilter, name);
+			if(useableStorage == null)
+				continue;
+			
 			break;
 		}
-		if(US == null) return null;
+		if(useableStorage == null)
+			return null;
 		
-		for(String UFNs : this.usableFactories.keySet()) {
-			UsableFactory UF = this.usableFactories.get(UFNs);
-			if(UF == null) continue;
-			UH = UF.getUsableHolder(UP, US);
-			if(UH != null) return UH;
+		for(String usePathName : usableFactories.keySet()) {
+			var usableFactory = usableFactories.get(usePathName);
+			if(usableFactory == null)
+				continue;
+			
+			var usableHolder = usableFactory.getUsableHolder(usePath, useableStorage);
+			if(usableHolder != null)
+				return (UsableHolder<T>)usableHolder;
 		}
 		
 		return null;
@@ -116,17 +111,17 @@ public abstract class UsePaths {
 	// Factory ---------------------------------------------------------------------------------------------------------
 	
 	/** Register a UsableFactory */
-	protected boolean registerFactory(UsableFactory UFactory) {
-		if(this.usableFactories.get(UFactory.getName()) != null) return false;
-		this.usableFactories.put(UFactory.getName(), UFactory);
-		return true;
+	protected boolean registerFactory(UsableFactory usableFactory) {
+		var factoryName = usableFactory.getName();
+		var factory     = usableFactories.putIfAbsent(factoryName, usableFactory);
+		return factory == null;
 	}
 	
-	/** Returns a registed UsableFactory */
-	public UsableFactory getUsableFactory(String FactoryName) {
-		return this.usableFactories.get(FactoryName);
+	/** Returns a registered UsableFactory */
+	public UsableFactory getUsableFactory(String factoryName) {
+		return usableFactories.get(factoryName);
 	}
-
+	
 	// Filter ----------------------------------------------------------------------------------------------------------
 	
 	/** @return  the usable filters that this UsePath uses. */
@@ -135,16 +130,16 @@ public abstract class UsePaths {
 	// Utilities -------------------------------------------------------------------------------------------------------
 	
 	/** Gets all class path */
-	protected String[] getClassPath() {
-		String CPath = System.getProperty("java.class.path");
-		return CPath.split(File.pathSeparator);
+	protected IStream<String> getClassPaths() {
+		var classPath  = System.getProperty("java.class.path");
+		var classPaths = classPath.split(File.pathSeparator);
+		return IStream.forSupplier(() -> Stream.of(classPaths));
 	}
 	
 	/** Register all system classpath as usepath */
 	protected void registerAllClassPath() {
-		String[] CPs = this.getClassPath();
-		for(String CP : CPs)
-			this.registerUsepath(CP);
+		var classPaths = this.getClassPaths();
+		classPaths.forEach(this::registerUsepath);
 	}
 	
 }
