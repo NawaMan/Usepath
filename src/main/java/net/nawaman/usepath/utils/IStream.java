@@ -14,39 +14,63 @@ import java.util.stream.Stream;
 public interface IStream<T> extends ExtensibleStream<T> {
 	
 	public static <DATA> IStream<DATA> empty() {
-		return new IStream.Simple<DATA>(Stream.empty());
+		return new IStream.FromStream<DATA>(Stream.empty());
 	}
 	
 	@SafeVarargs
 	public static <DATA> IStream<DATA> forStream(Stream<DATA>... originals) {
-		return new IStream.Simple<DATA>(Stream.of(originals).flatMap(each -> each));
+		return new IStream.FromStream<DATA>(Stream.of(originals).flatMap(each -> each));
 	}
 	
 	@SafeVarargs
 	public static <DATA> IStream<DATA> of(DATA... values) {
-		return new IStream.Simple<DATA>(Stream.of(values));
+		return new IStream.FromStream<DATA>(Stream.of(values));
 	}
 	
 	public static <DATA> IStream<DATA> forCollection(Collection<DATA> values) {
-		return new IStream.Simple<DATA>(values.stream());
+		return new IStream.FromCollection<DATA>(values);
 	}
 	
 	public static <DATA> IStream<DATA> forSupplier(Supplier<Stream<DATA>> supplier) {
 		return supplier::get;
 	}
 	
-	public static class Simple<DATA> implements IStream<DATA> {
+	public static class FromCollection<DATA> implements IStream<DATA> {
+		
+		private final Collection<DATA> original;
+		
+		public FromCollection(Collection<DATA> original) {
+			this.original = original;
+		}
+		
+		@Override
+		public Stream<DATA> stream() {
+			return original.stream();
+		}
+		
+		@Override
+		public long count() {
+			return original.size();
+		}
+		
+		@Override
+		public String toString() {
+			return original.toString();
+		}
+	}
+	
+	public static class FromStream<DATA> implements IStream<DATA> {
 		
 		private final Stream<DATA> original;
 		
-		public Simple(Stream<DATA> original) {
+		public FromStream(Stream<DATA> original) {
 			this.original = original;
 		}
 		
 		@Override
 		public Stream<DATA> stream() {
 			return original;
-		};
+		}
 		
 		@Override
 		public String toString() {

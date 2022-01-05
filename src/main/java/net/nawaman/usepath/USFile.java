@@ -47,7 +47,7 @@ public class USFile implements UsableStorage {
 	File TheFile;
 	
 	/**{@inheritDoc}*/ @Override
-	public String getName() {
+	public String name() {
 		return this.TheFile.getName();
 	}
 	

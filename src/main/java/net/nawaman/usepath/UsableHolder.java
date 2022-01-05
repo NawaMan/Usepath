@@ -17,36 +17,37 @@
  */
 package net.nawaman.usepath;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.Supplier;
+
 /**
- * Hold the object.
+ * Hold the object from the usepath.
  * 
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
-abstract public class UsableHolder<T> {
+public abstract class UsableHolder<T> implements Supplier<T> {
 	
-	Usepath Usepath;
-	String  Name;
+	private final UsePath usepath;
+	private final String  objectName;
 	
 	/** Constructs a UsableHolder */
-	protected UsableHolder(Usepath pUsepath, String pName) {
-		if(pUsepath   == null) throw new NullPointerException();
-		if(pName      == null) throw new NullPointerException();
-		
-		this.Usepath = pUsepath;
-		this.Name    = pName;
+	protected UsableHolder(UsePath usePath, String objectName) {
+		this.usepath    = requireNonNull(usePath,    "`usePath` must not be null.");
+		this.objectName = requireNonNull(objectName, "`objectName` must not be null.");
 	}
 	
 	/** Returns the object name */
-	final public String getName() {
-		return this.Name;
+	public final String objectName() {
+		return this.objectName;
 	}
-
+	
 	/** Returns the usepath that load this object */
-	final public Usepath getUsepath() {
-		return this.Usepath;
+	public final UsePath getUsepath() {
+		return this.usepath;
 	}
 	
 	/** Returns the Object */
-	abstract public T get();
-
+	public abstract T get();
+	
 }

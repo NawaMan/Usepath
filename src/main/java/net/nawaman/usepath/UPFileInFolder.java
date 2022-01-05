@@ -26,7 +26,7 @@ import java.io.IOException;
  * 
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
-public class UPFileInFolder extends Usepath {
+public class UPFileInFolder extends UsePath {
 	
 	public UPFileInFolder(File Folder) {
 		this.Folder = Folder;

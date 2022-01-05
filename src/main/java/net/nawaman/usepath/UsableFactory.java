@@ -28,6 +28,6 @@ public interface UsableFactory {
 	public String getName();
 	
 	/** Create the UsableHolder from the given paramters */
-	public UsableHolder<? extends Object> getUsableHolder(Usepath Path, UsableStorage Storage);
+	public UsableHolder<? extends Object> getUsableHolder(UsePath Path, UsableStorage Storage);
 
 }

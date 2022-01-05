@@ -22,10 +22,10 @@ package net.nawaman.usepath;
  * 
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
-public abstract class AppendableUsepaths extends Usepaths {
+public abstract class AppendableUsepaths extends UsePaths {
 	
 	/** Register a usepath from string */
-	protected final void registerUsepath(String name, Usepath usepath) {
+	protected final void registerUsepath(String name, UsePath usepath) {
 		super.registerUsepath(name, usepath);
 	}
 	

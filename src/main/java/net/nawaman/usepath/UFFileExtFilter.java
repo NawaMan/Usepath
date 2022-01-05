@@ -35,7 +35,7 @@ public class UFFileExtFilter extends UFFilenameFilter {
 	 * Filters if the object with the given full name is match with the given name
 	 * for the usable being search
 	 */
-	public boolean isMatch(Usepath UPath, String FullName, String Name) {
+	public boolean isMatch(UsePath UPath, String FullName, String Name) {
 		if (Name == null)
 			return false;
 		File F = new File(FullName);

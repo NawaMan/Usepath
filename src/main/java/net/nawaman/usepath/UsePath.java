@@ -27,26 +27,26 @@ import java.util.Optional;
  * 
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
-public abstract class Usepath {
+public abstract class UsePath {
 	
-	private final Usepaths usepaths;
+	private final UsePaths usePaths;
 	
-	protected Usepath() {
+	protected UsePath() {
 		this(null);
 	}
 	
-	protected Usepath(Usepaths usepaths) {
-		this.usepaths = usepaths;
+	protected UsePath(UsePaths usePaths) {
+		this.usePaths = usePaths;
 	}
-
+	
 	/** Returns the name of this Usepath */
 	public abstract String name();
 	
 	/** Returns source usepaths that holds this Usepath */
-	protected final Optional<Usepaths> source() {
-		return Optional.ofNullable(this.usepaths);
+	protected final Optional<UsePaths> source() {
+		return Optional.ofNullable(this.usePaths);
 	}
-
+	
 	/** Creates a Storage for the matched Usable */
 	public abstract UsableStorage newUsableStorage(UsableFilter usableFilter, String name);
 	

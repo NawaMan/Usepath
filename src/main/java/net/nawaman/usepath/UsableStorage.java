@@ -25,17 +25,17 @@ import java.io.IOException;
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
 abstract public interface UsableStorage {
-
+	
 	/** Returns the name of the Storage */
-	public String getName();
-
-	/** Saves to data into the storaget (replace existing data) */
-	public void save(byte[] Data) throws IOException ;
+	public String name();
+	
+	/** Saves to data into the storage (replace existing data) */
+	public void save(byte[] data) throws IOException ;
 	
 	/** Loads data output the storage */
 	public byte[] load() throws IOException ;
 	
-	/** Checks if the storage iswritable */
+	/** Checks if the storage is writable */
 	public boolean isWritable();
 	
 }
