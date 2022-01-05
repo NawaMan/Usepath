@@ -17,6 +17,8 @@
  */
 package net.nawaman.usepath;
 
+import static java.util.Objects.requireNonNullElse;
+
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -28,44 +30,42 @@ import java.io.FilenameFilter;
 abstract public class FilenameUsableFilter implements UsableFilter {
 	
 	/** Accept all file FilenameFilter */
-	static public FilenameFilter ACCEPT_ALL_FILENAMEFILTER = new AcceptAllFilenameFilter();
+	public static final FilenameFilter ACCEPT_ALL_FILENAMEFILTER = new AcceptAllFilenameFilter();
 	
 	/** Accept no file FilenameFilter */
-	static public FilenameFilter ACCEPT_NONE_FILENAMEFILTER = new AcceptNoneFilenameFilter();
-
-	/** Construct a UFFilenameFilter */
-	public FilenameUsableFilter(FilenameFilter pFilenameFilter) {
-		
-		// Accept none if null is given
-		if(pFilenameFilter == null) pFilenameFilter = ACCEPT_NONE_FILENAMEFILTER;
-		
-		this.fileNameFilter = pFilenameFilter;
-	}
+	public static final FilenameFilter ACCEPT_NONE_FILENAMEFILTER = new AcceptNoneFilenameFilter();
 	
 	private final FilenameFilter fileNameFilter;
+	
+	/** Construct a UFFilenameFilter */
+	public FilenameUsableFilter(FilenameFilter filenameFilter) {
+		this.fileNameFilter = requireNonNullElse(filenameFilter, ACCEPT_NONE_FILENAMEFILTER);
+	}
 	
 	public FilenameFilter filter() {
 		return fileNameFilter;
 	}
 	
-	
-	// Utility classes -------------------------------------------------------------------------------------------------  
+	// Utility classes -------------------------------------------------------------------------------------------------
 	
 	/** Accept all FileFilter */
-	static public final class AcceptAllFilenameFilter implements FilenameFilter{
-	    /**{@inheritDoc}*/ @Override
-	    public boolean accept(File dir, String name) {
-	    	// Accept true
-	    	return true;
-	    }
-	};
+	public static final class AcceptAllFilenameFilter implements FilenameFilter {
+		/** {@inheritDoc} */
+		@Override
+		public boolean accept(File dir, String name) {
+			// Accept true
+			return true;
+		}
+	}
 	
 	/** Accept None FileFilter */
-	static public final class AcceptNoneFilenameFilter implements FilenameFilter {
-	    /**{@inheritDoc}*/ @Override
-	    public boolean accept(File dir, String name) {
-	    	// Accept none
-	    	return false;
-	    }
-	};
+	public static final class AcceptNoneFilenameFilter implements FilenameFilter {
+		/** {@inheritDoc} */
+		@Override
+		public boolean accept(File dir, String name) {
+			// Accept none
+			return false;
+		}
+	}
+	
 }

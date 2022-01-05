@@ -26,37 +26,42 @@ import java.io.File;
  **/
 public class FileExtUsableFilter extends FilenameUsableFilter {
 	
-	/** Construct a UFFileExtFilter */
-	public FileExtUsableFilter(FileExtFilter pFileExtFilter) {
-		super(new FileExtFilenameFilter.Simple(pFileExtFilter));
+	/** Construct a FileExtUsableFilter */
+	public FileExtUsableFilter(FileExtFilter fileExtFilter) {
+		super(new FileExtFilenameFilter.Simple(fileExtFilter));
 	}
 	
 	/**
-	 * Filters if the object with the given full name is match with the given name
-	 * for the usable being search
+	 * Filters if the object with the given full name is match with the given name for the usable being search
 	 */
-	public boolean isMatch(UsePath UPath, String FullName, String Name) {
-		if (Name == null)
-			return false;
-		File F = new File(FullName);
-		if (!this.filter().accept(F.getParentFile(), F.getName()))
+	public boolean isMatch(UsePath usePath, String fullName, String name) {
+		if (name == null)
 			return false;
 		
-		int NLength = Name.length();
-		// int StartIndex = FullName.lastIndexOf(File.separator);
-		int EndIndex;
-		if ((EndIndex = FullName.lastIndexOf('.')) == -1)
-			EndIndex = FullName.length();
+		var file = new File(fullName);
+		if (!filter().accept(file.getParentFile(), file.getName()))
+			return false;
+		
+		int nameLength = name.length();
+		int endIndex;
+		if ((endIndex = fullName.lastIndexOf('.')) == -1) {
+			endIndex = fullName.length();
+		}
 		
 		// Try as no dot and with dot
-		if ((Name.indexOf('.') != -1) && Name.equals(FullName.substring(EndIndex - NLength)))
+		int dotIndex = name.indexOf('.');
+		if ((dotIndex != -1) && name.equals(fullName.substring(endIndex - nameLength)))
 			return true;
-		if ((Name.indexOf('.') != -1) && Name.equals(FullName.substring(FullName.length() - NLength)))
+		
+		if ((dotIndex != -1) && name.equals(fullName.substring(fullName.length() - nameLength)))
 			return true;
-		if (Name.equals(FullName.substring(EndIndex - NLength, EndIndex)))
+		
+		if (name.equals(fullName.substring(endIndex - nameLength, endIndex)))
 			return true;
-		if (Name.equals(FullName.substring(FullName.length() - NLength, EndIndex)))
+		
+		if (name.equals(fullName.substring(fullName.length() - nameLength, endIndex)))
 			return true;
+		
 		return false;
 	}
 }

@@ -19,6 +19,7 @@ package net.nawaman.usepath;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Objects;
 
 /**
  * Accepts the file with the extension.
@@ -32,45 +33,42 @@ abstract public class FileExtFilenameFilter implements FileExtFilter, FilenameFi
 	/**
 	 * Accepts the file with the extension.
 	 * 
-	 * @param Dir  is the parent directory of the file.
-	 * @param Name is the name of the file with no extension in it.
-	 * @param Ext  is the extension of the file with no name nor dot. If the file
+	 * @param dir  is the parent directory of the file.
+	 * @param name is the name of the file with no extension in it.
+	 * @param ext  is the extension of the file with no name nor dot. If the file
 	 *             has not extension. "" is given.
 	 **/
-	public abstract boolean accept(File Dir, String Name, String Ext);
+	public abstract boolean accept(File dir, String name, String ext);
 	
 	/** {@inheritDoc} */
 	@Override
-	public boolean accept(File Dir, String Name) {
+	public boolean accept(File dir, String name) {
 		// Extract the file name and its extension
-		int    Index = Name.lastIndexOf('.');
-		String Ext   = "";
-		if (Index > 0) {
-			Ext  = Name.substring(Index + 1);
-			Name = Name.substring(0, Index);
+		int index = name.lastIndexOf('.');
+		var ext   = "";
+		if (index > 0) {
+			ext  = name.substring(index + 1);
+			name = name.substring(0, index);
 		}
-		return this.accept(Dir, Name, Ext);
+		return this.accept(dir, name, ext);
 	}
 	
-	// Simple implementation
-	// ---------------------------------------------------------------------------------------
+	// Simple implementation ---------------------------------------------------------------------------------------
 	
 	/** Simple implementation */
-	static public class Simple extends FileExtFilenameFilter {
+	public static class Simple extends FileExtFilenameFilter {
+		
+		private final FileExtFilter fileExtFilter;
 		
 		/** Constructs a simple implementation */
-		public Simple(FileExtFilter pFileExtFilter) {
-			if (pFileExtFilter == null)
-				pFileExtFilter = new AcceptNoneFileExtFilter();
-			this.FileExtFilter = pFileExtFilter;
+		public Simple(FileExtFilter fileExtFilter) {
+			this.fileExtFilter = Objects.requireNonNullElseGet(fileExtFilter, AcceptNoneFileExtFilter::new);
 		}
-		
-		FileExtFilter FileExtFilter;
 		
 		/** {@inheritDoc} */
 		@Override
-		public boolean accept(File Dir, String Name, String Ext) {
-			return this.FileExtFilter.accept(Dir, Name, Ext);
+		public boolean accept(File dir, String name, String ext) {
+			return this.fileExtFilter.accept(dir, name, ext);
 		}
 	}
 	
