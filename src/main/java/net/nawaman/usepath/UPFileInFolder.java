@@ -28,67 +28,76 @@ import java.io.IOException;
  **/
 public class UPFileInFolder extends UsePath {
 	
-	public UPFileInFolder(File Folder) {
-		this.Folder = Folder;
-		if((this.Folder == null) || !this.Folder.exists() || !this.Folder.isDirectory() || !this.Folder.canRead())
-			throw new RuntimeException(
-					new FileNotFoundException(
-						"Not a readable folder "+((this.Folder != null)?"("+Folder+")":"")+""));
+	private final File folder;
+	
+	public UPFileInFolder(File folder) {
+		this.folder = folder;
+		if((this.folder == null) || !this.folder.exists() || !this.folder.isDirectory() || !this.folder.canRead()) {
+			var errMessage   = "Not a readable folder " + ((this.folder != null)?"("+folder+")":"");
+			var fileNotFound = new FileNotFoundException(errMessage);
+			throw new RuntimeException(fileNotFound);
+		}
 	}
 	
-	public UPFileInFolder(String FolderPath) {
-		this(new File(FolderPath));
+	public UPFileInFolder(String folderPath) {
+		this(new File(folderPath));
 	}
-	
-	File Folder;
 	
 	/** Returns the folder */
-	public File getFolder() {
-		return this.Folder;
+	public File folder() {
+		return folder;
 	}
 	
 	/**{@inheritDoc}*/ @Override
 	public String name() {
-		return this.Folder.getAbsolutePath();
+		return folder.getAbsolutePath();
 	}
 
 	/**{@inheritDoc}*/ @Override
-	public UsableStorage newUsableStorage(UsableFilter UFilter, String Name) {
-		if(UFilter == null) return null;
+	public UsableStorage newUsableStorage(UsableFilter usableFilter, String name) {
+		if(usableFilter == null)
+			return null;
 		
-		String[] Parts = Name.split("/");
-		
-		String PathName = "";
-		String FileName = "";
-		if(Parts.length == 1) FileName = Parts[0];
-		else {
-			FileName = Parts[Parts.length - 1];
-			PathName = Name.substring(0, Name.length() - FileName.length());
+		var parts    = name.split("/");
+		var pathName = "";
+		var fileName = "";
+		if(parts.length == 1) {
+			fileName = parts[0];
+		} else {
+			fileName = parts[parts.length - 1];
+			pathName = name.substring(0, name.length() - fileName.length());
 		}
 		
-		File Path = this.Folder;
-		if(PathName.length() != 0) {
-			Path = new File(Path.getAbsolutePath() + File.separator + PathName);
-			if(!Path.exists()) return null;
+		var path = folder;
+		if(pathName.length() != 0) {
+			path = new File(path.getAbsolutePath() + File.separator + pathName);
+			if(!path.exists())
+				return null;
 		}
 		
-		File[] Fs = null;
+		File[] files = files(usableFilter, path);
 		
-		if(     UFilter instanceof UFFileFilter)     Fs = Path.listFiles(((UFFileFilter)    UFilter).FileFilter);
-		else if(UFilter instanceof UFFilenameFilter) Fs = Path.listFiles(((UFFilenameFilter)UFilter).FilenameFilter);
-		else                                         Fs = Path.listFiles();
-		
-		for(int i = 0; i < Fs.length; i++) {
-			File F = Fs[i];
-			if(!UFilter.isMatch(this, F.getAbsolutePath(), Name))
+		for(int i = 0; i < files.length; i++) {
+			var file = files[i];
+			if(!usableFilter.isMatch(this, file.getAbsolutePath(), name))
 				continue;
 			
 			// Match
-			try { return new USFile(F); }
+			try { return new USFile(file); }
 			catch (IOException IOE) {}
 		}
 		
 		return null;
+	}
+	
+	private File[] files(UsableFilter usableFilter, File path) {
+		if(usableFilter instanceof UFFileFilter)
+			return path.listFiles(((UFFileFilter)usableFilter).filter());
+		
+		if(usableFilter instanceof UFFilenameFilter)
+			return path.listFiles(((UFFilenameFilter)usableFilter).filter());
+		
+		return path.listFiles();
 	}
 
 }

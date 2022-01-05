@@ -112,7 +112,7 @@ public abstract class UsePaths {
 	
 	/** Register a UsableFactory */
 	protected boolean registerFactory(UsableFactory usableFactory) {
-		var factoryName = usableFactory.getName();
+		var factoryName = usableFactory.name();
 		var factory     = usableFactories.putIfAbsent(factoryName, usableFactory);
 		return factory == null;
 	}

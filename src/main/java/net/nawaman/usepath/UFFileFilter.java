@@ -49,14 +49,18 @@ public class UFFileFilter implements UsableFilter {
 			};
 		}
 		
-		this.FileFilter = pFileFilter;
+		this.fileFilter = pFileFilter;
 	}
 
-	FileFilter FileFilter;
-
+	private final FileFilter fileFilter;
+	
+	public FileFilter filter() {
+		return fileFilter;
+	}
+	
 	/** Filters if the object with the given full name is match with the given name for the usable being search */
 	public boolean isMatch(UsePath UPath, String FullName, String Name) {
-		return this.FileFilter.accept(new File(FullName));
+		return this.fileFilter.accept(new File(FullName));
 	}
 	
 	// Utility classes -------------------------------------------------------------------------------------------------  

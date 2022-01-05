@@ -39,7 +39,7 @@ public class UFFileExtFilter extends UFFilenameFilter {
 		if (Name == null)
 			return false;
 		File F = new File(FullName);
-		if (!this.FilenameFilter.accept(F.getParentFile(), F.getName()))
+		if (!this.filter().accept(F.getParentFile(), F.getName()))
 			return false;
 		
 		int NLength = Name.length();

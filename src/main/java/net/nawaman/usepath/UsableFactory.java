@@ -25,9 +25,9 @@ package net.nawaman.usepath;
 public interface UsableFactory {
 	
 	/** Returns the name of the Factory */
-	public String getName();
+	public String name();
 	
-	/** Create the UsableHolder from the given paramters */
-	public UsableHolder<? extends Object> getUsableHolder(UsePath Path, UsableStorage Storage);
+	/** Create the UsableHolder from the given parameters */
+	public <T> UsableHolder<T> getUsableHolder(UsePath path, UsableStorage storage);
 
 }

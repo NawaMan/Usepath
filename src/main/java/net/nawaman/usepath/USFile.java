@@ -17,13 +17,13 @@
  */
 package net.nawaman.usepath;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Usable storage in a file.
@@ -32,67 +32,54 @@ import java.io.OutputStream;
  */
 public class USFile implements UsableStorage {
 	
-	public USFile(String TheFileName) throws FileNotFoundException {
-		this(new java.io.File(TheFileName));
+	private final File file;
+	
+	public USFile(String fileName) throws FileNotFoundException {
+		this(new java.io.File(fileName));
 	}
 	
-	public USFile(java.io.File theFile) throws FileNotFoundException {
-		if(theFile == null) throw new NullPointerException();
-		this.TheFile = theFile;
+	public USFile(java.io.File file) throws FileNotFoundException {
+		this.file = requireNonNull(file, "`file` cannot be null.");
 		
-		if(!this.TheFile.exists() || !this.TheFile.canRead())
+		if(!this.file.exists() || !this.file.canRead())
 			throw new FileNotFoundException("The goven file is not found or not a readable file.");
 	}
 	
-	File TheFile;
-	
 	/**{@inheritDoc}*/ @Override
 	public String name() {
-		return this.TheFile.getName();
+		return file.getName();
 	}
 	
 	/** Returns the file of this storage */
-	public File getTheFile() {
-		return this.TheFile;
+	public File file() {
+		return file;
 	}
 	
 	/**{@inheritDoc}*/ @Override
-	synchronized public void save(byte[] Data) throws IOException {
-		OutputStream OS = null;
-		try {
-			OS = new FileOutputStream(this.TheFile);
-			OS.write(Data);
-		} finally {
-			if(OS != null) {
-				OS.flush();
-				OS.close();
-			}
+	public synchronized void save(byte[] Data) throws IOException {
+		try (var outputStream = new FileOutputStream(file)) {
+			outputStream.write(Data);
 		}
-		return;
 	}
 	
 	/** Loads data output the storage */
 	synchronized public byte[] load() throws IOException {
-		InputStream IS = null;
-		try {
-			IS = new FileInputStream(this.TheFile);
-			long Length = this.TheFile.length();
+		try (var inputStream = new FileInputStream(file)) {
+			long Length = file.length();
 			
 			if (Length > Integer.MAX_VALUE)
-				throw new IOException("The file is too large: " + this.TheFile.getAbsolutePath());
+				throw new IOException("The file is too large: " + file.getAbsolutePath());
 						
-			byte[] Data = new byte[(int)Length];
-			IS.read(Data);
+			var Data = new byte[(int)Length];
+			inputStream.read(Data);
 			
 			return Data;
-		} finally {
-			if(IS != null) IS.close();
 		}
 	}
 	
-	/** Checks if the storage iswritable */
+	/** Checks if the storage isWritable */
 	public boolean isWritable() {
-		return this.TheFile.canWrite();
+		return file.canWrite();
 	}
 
 }

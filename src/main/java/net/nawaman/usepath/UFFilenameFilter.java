@@ -39,11 +39,14 @@ abstract public class UFFilenameFilter implements UsableFilter {
 		// Accept none if null is given
 		if(pFilenameFilter == null) pFilenameFilter = ACCEPT_NONE_FILENAMEFILTER;
 		
-		this.FilenameFilter = pFilenameFilter;
+		this.fileNameFilter = pFilenameFilter;
 	}
-
-	FilenameFilter FilenameFilter;
-
+	
+	private final FilenameFilter fileNameFilter;
+	
+	public FilenameFilter filter() {
+		return fileNameFilter;
+	}
 	
 	
 	// Utility classes -------------------------------------------------------------------------------------------------  
