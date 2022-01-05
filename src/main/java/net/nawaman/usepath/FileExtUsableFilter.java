@@ -24,10 +24,10 @@ import java.io.File;
  * 
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
-public class UFFileExtFilter extends UFFilenameFilter {
+public class FileExtUsableFilter extends FilenameUsableFilter {
 	
 	/** Construct a UFFileExtFilter */
-	public UFFileExtFilter(FileExtFilter pFileExtFilter) {
+	public FileExtUsableFilter(FileExtFilter pFileExtFilter) {
 		super(new FileExtFilenameFilter.Simple(pFileExtFilter));
 	}
 	

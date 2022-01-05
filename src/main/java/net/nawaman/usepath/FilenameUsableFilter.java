@@ -25,7 +25,7 @@ import java.io.FilenameFilter;
  * 
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
-abstract public class UFFilenameFilter implements UsableFilter {
+abstract public class FilenameUsableFilter implements UsableFilter {
 	
 	/** Accept all file FilenameFilter */
 	static public FilenameFilter ACCEPT_ALL_FILENAMEFILTER = new AcceptAllFilenameFilter();
@@ -34,7 +34,7 @@ abstract public class UFFilenameFilter implements UsableFilter {
 	static public FilenameFilter ACCEPT_NONE_FILENAMEFILTER = new AcceptNoneFilenameFilter();
 
 	/** Construct a UFFilenameFilter */
-	public UFFilenameFilter(FilenameFilter pFilenameFilter) {
+	public FilenameUsableFilter(FilenameFilter pFilenameFilter) {
 		
 		// Accept none if null is given
 		if(pFilenameFilter == null) pFilenameFilter = ACCEPT_NONE_FILENAMEFILTER;

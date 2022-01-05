@@ -30,15 +30,15 @@ import java.io.IOException;
  * 
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  */
-public class USFile implements UsableStorage {
+public class UsableStorageFile implements UsableStorage {
 	
 	private final File file;
 	
-	public USFile(String fileName) throws FileNotFoundException {
+	public UsableStorageFile(String fileName) throws FileNotFoundException {
 		this(new java.io.File(fileName));
 	}
 	
-	public USFile(java.io.File file) throws FileNotFoundException {
+	public UsableStorageFile(java.io.File file) throws FileNotFoundException {
 		this.file = requireNonNull(file, "`file` cannot be null.");
 		
 		if(!this.file.exists() || !this.file.canRead())

@@ -27,7 +27,7 @@ import java.io.FileFilter;
  * 
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
-public class UFFileFilter implements UsableFilter {
+public class FileUsableFilter implements UsableFilter {
 	
 	/** Accept all file FileFilter */
 	static public FileFilter ACCEPT_ALL_FILEFILTER = new AcceptAllFileFilter();
@@ -36,7 +36,7 @@ public class UFFileFilter implements UsableFilter {
 	static public FileFilter ACCEPT_NONE_FILEFILTER = new AcceptNoneFileFilter();
 	
 	/** Construct a UFFileFilter */
-	public UFFileFilter(FileFilter pFileFilter) {
+	public FileUsableFilter(FileFilter pFileFilter) {
 		
 		// Accept none if null is given
 		if(pFileFilter == null) {

@@ -26,11 +26,11 @@ import java.io.IOException;
  * 
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
-public class UPFileInFolder extends UsePath {
+public class UsePathFileInFolder extends UsePath {
 	
 	private final File folder;
 	
-	public UPFileInFolder(File folder) {
+	public UsePathFileInFolder(File folder) {
 		this.folder = folder;
 		if((this.folder == null) || !this.folder.exists() || !this.folder.isDirectory() || !this.folder.canRead()) {
 			var errMessage   = "Not a readable folder " + ((this.folder != null)?"("+folder+")":"");
@@ -39,7 +39,7 @@ public class UPFileInFolder extends UsePath {
 		}
 	}
 	
-	public UPFileInFolder(String folderPath) {
+	public UsePathFileInFolder(String folderPath) {
 		this(new File(folderPath));
 	}
 	
@@ -83,7 +83,7 @@ public class UPFileInFolder extends UsePath {
 				continue;
 			
 			// Match
-			try { return new USFile(file); }
+			try { return new UsableStorageFile(file); }
 			catch (IOException IOE) {}
 		}
 		
@@ -91,11 +91,11 @@ public class UPFileInFolder extends UsePath {
 	}
 	
 	private File[] files(UsableFilter usableFilter, File path) {
-		if(usableFilter instanceof UFFileFilter)
-			return path.listFiles(((UFFileFilter)usableFilter).filter());
+		if(usableFilter instanceof FileUsableFilter)
+			return path.listFiles(((FileUsableFilter)usableFilter).filter());
 		
-		if(usableFilter instanceof UFFilenameFilter)
-			return path.listFiles(((UFFilenameFilter)usableFilter).filter());
+		if(usableFilter instanceof FilenameUsableFilter)
+			return path.listFiles(((FilenameUsableFilter)usableFilter).filter());
 		
 		return path.listFiles();
 	}
