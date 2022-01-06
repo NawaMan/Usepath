@@ -29,5 +29,5 @@ public interface UsableFactory {
 	
 	/** Create the UsableHolder from the given parameters */
 	public <T> UsableHolder<T> getUsableHolder(UsePath path, UsableStorage storage);
-
+	
 }

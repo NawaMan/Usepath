@@ -23,7 +23,7 @@ package net.nawaman.usepath;
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
 public interface UsableFilter {
-
+	
 	/** Filters if the object with the given full name is match with the given name for the usable being search */
 	public boolean isMatch(UsePath usePath, String fullName, String name);
 	

@@ -75,7 +75,7 @@ public class UsePathFileInFolder extends UsePath {
 				return null;
 		}
 		
-		File[] files = files(usableFilter, path);
+		var files = files(usableFilter, path);
 		
 		for(int i = 0; i < files.length; i++) {
 			var file = files[i];

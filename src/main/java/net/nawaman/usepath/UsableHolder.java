@@ -19,14 +19,12 @@ package net.nawaman.usepath;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.function.Supplier;
-
 /**
  * Hold the object from the usepath.
  * 
  * @author Nawapunth Manusitthipol (https://github.com/NawaMan)
  **/
-public abstract class UsableHolder<T> implements Supplier<T> {
+public abstract class UsableHolder<T> {
 	
 	private final UsePath usepath;
 	private final String  objectName;
@@ -43,7 +41,7 @@ public abstract class UsableHolder<T> implements Supplier<T> {
 	}
 	
 	/** Returns the usepath that load this object */
-	public final UsePath getUsepath() {
+	public final UsePath usePath() {
 		return this.usepath;
 	}
 	

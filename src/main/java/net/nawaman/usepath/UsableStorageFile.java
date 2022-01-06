@@ -56,9 +56,9 @@ public class UsableStorageFile implements UsableStorage {
 	}
 	
 	/**{@inheritDoc}*/ @Override
-	public synchronized void save(byte[] Data) throws IOException {
+	public synchronized void save(byte[] data) throws IOException {
 		try (var outputStream = new FileOutputStream(file)) {
-			outputStream.write(Data);
+			outputStream.write(data);
 		}
 	}
 	
@@ -69,11 +69,11 @@ public class UsableStorageFile implements UsableStorage {
 			
 			if (Length > Integer.MAX_VALUE)
 				throw new IOException("The file is too large: " + file.getAbsolutePath());
-						
-			var Data = new byte[(int)Length];
-			inputStream.read(Data);
 			
-			return Data;
+			var data = new byte[(int)Length];
+			inputStream.read(data);
+			
+			return data;
 		}
 	}
 	

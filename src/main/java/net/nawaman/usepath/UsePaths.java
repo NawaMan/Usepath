@@ -22,8 +22,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-import net.nawaman.usepath.utils.IStream;
-
 // FullName		=>	jar:file://<jvm>/lib/rt.jar::java.io.File	
 // Name		 	=>	java.io.File
 // ShortName	=>	File
@@ -57,8 +55,8 @@ public abstract class UsePaths {
 	}
 	
 	/** Returns the use path as string */
-	public final IStream<String> usepaths() {
-		return IStream.forSupplier(() -> usepaths.keySet().stream().sorted());
+	public final Stream<String> usepaths() {
+		return usepaths.keySet().stream().sorted();
 	}
 	
 	// Look up ---------------------------------------------------------------------------------------------------------
@@ -125,15 +123,15 @@ public abstract class UsePaths {
 	// Filter ----------------------------------------------------------------------------------------------------------
 	
 	/** @return  the usable filters that this UsePath uses. */
-	abstract public IStream<UsableFilter> usableFilters();
+	abstract public Stream<UsableFilter> usableFilters();
 	
 	// Utilities -------------------------------------------------------------------------------------------------------
 	
 	/** Gets all class path */
-	protected IStream<String> getClassPaths() {
+	protected Stream<String> getClassPaths() {
 		var classPath  = System.getProperty("java.class.path");
 		var classPaths = classPath.split(File.pathSeparator);
-		return IStream.forSupplier(() -> Stream.of(classPaths));
+		return Stream.of(classPaths);
 	}
 	
 	/** Register all system classpath as usepath */

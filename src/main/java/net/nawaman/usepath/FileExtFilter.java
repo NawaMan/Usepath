@@ -76,7 +76,7 @@ public interface FileExtFilter {
 		public boolean accept(File dir, String name, String ext) {
 			return accepts.contains(ext);
 		}
-	};
+	}
 	
 	/** Filter the extension using the given regular expression */
 	static public final class FEFRegExp implements FileExtFilter {
@@ -94,5 +94,6 @@ public interface FileExtFilter {
 			var matcher = extPattern.matcher(ext);
 			return matcher.find();
 		}
-	};
+	}
+	
 }
