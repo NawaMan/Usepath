@@ -76,7 +76,6 @@ public class UsePathFileInFolder extends UsePath {
 		}
 		
 		var files = files(usableFilter, path);
-		
 		for(int i = 0; i < files.length; i++) {
 			var file = files[i];
 			if(!usableFilter.isMatch(this, file.getAbsolutePath(), name))

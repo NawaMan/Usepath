@@ -38,8 +38,10 @@ public class FileExtUsableFilter extends FilenameUsableFilter {
 		if (name == null)
 			return false;
 		
-		var file = new File(fullName);
-		if (!filter().accept(file.getParentFile(), file.getName()))
+		var file       = new File(fullName);
+		var parentFile = file.getParentFile();
+		var fileName   = file.getName();
+		if (!filter().accept(parentFile, fileName))
 			return false;
 		
 		int nameLength = name.length();

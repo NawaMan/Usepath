@@ -63,11 +63,11 @@ public interface FileExtFilter {
 	}
 	
 	/** Filter the extension using the given extension list */
-	public static final class FEFExtList implements FileExtFilter {
+	public static final class ExtListFileFilter implements FileExtFilter {
 		
 		private final Set<String> accepts;
 		
-		public FEFExtList(String... exts) {
+		public ExtListFileFilter(String... exts) {
 			accepts = new HashSet<String>(Arrays.asList(exts));
 		}
 		
@@ -79,19 +79,19 @@ public interface FileExtFilter {
 	}
 	
 	/** Filter the extension using the given regular expression */
-	static public final class FEFRegExp implements FileExtFilter {
+	static public final class RegExpFileFilter implements FileExtFilter {
 		
-		private final Pattern extPattern;
+		private final Pattern regExpPattern;
 		
-		public FEFRegExp(Pattern extPattern) {
-			this.extPattern = extPattern;
+		public RegExpFileFilter(Pattern extPattern) {
+			this.regExpPattern = extPattern;
 		}
 		
 		/** {@inheritDoc} */
 		@Override
 		public boolean accept(File dir, String name, String ext) {
 			// Accept true
-			var matcher = extPattern.matcher(ext);
+			var matcher = regExpPattern.matcher(ext);
 			return matcher.find();
 		}
 	}
